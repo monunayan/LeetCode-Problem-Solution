@@ -1,37 +1,32 @@
 class Solution {
     public String convert(String s, int numRows) {
 
-        if (numRows == 1 || numRows >= s.length()) {
+        int n = s.length();
+
+        if (numRows == 1 || numRows >= n) {
             return s;
         }
 
-        StringBuilder[] rows = new StringBuilder[numRows];
+        StringBuilder result = new StringBuilder(n);
 
-        for (int i = 0; i < numRows; i++) {
-            rows[i] = new StringBuilder();
-        }
+        int cycle = 2 * numRows - 2;
 
-        int currentRow = 0;
-        boolean goingDown = true;
+        for (int row = 0; row < numRows; row++) {
 
-        for (char c : s.toCharArray()) {
+            for (int i = row; i < n; i += cycle) {
 
-            rows[currentRow].append(c);
+                result.append(s.charAt(i));
 
-            if (currentRow == numRows - 1) {
-                goingDown = false;
-            } 
-            else if (currentRow == 0) {
-                goingDown = true;
+                // Middle rows have an additional character
+                int diagonal = i + cycle - 2 * row;
+
+                if (row != 0 &&
+                    row != numRows - 1 &&
+                    diagonal < n) {
+
+                    result.append(s.charAt(diagonal));
+                }
             }
-
-            currentRow += goingDown ? 1 : -1;
-        }
-
-        StringBuilder result = new StringBuilder();
-
-        for (StringBuilder row : rows) {
-            result.append(row);
         }
 
         return result.toString();
