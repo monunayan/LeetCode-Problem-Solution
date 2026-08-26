@@ -1,7 +1,7 @@
 class Solution {
     public List<List<Integer>> fourSum(int[] nums, int target) {
 
-        List<List<Integer>> result = new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<>();
         int n = nums.length;
 
         Arrays.sort(nums);
@@ -11,50 +11,61 @@ class Solution {
             if (i > 0 && nums[i] == nums[i - 1])
                 continue;
 
+            // Minimum possible sum > target
+            if ((long) nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target)
+                break;
+
+            // Maximum possible sum < target
+            if ((long) nums[i] + nums[n - 1] + nums[n - 2] + nums[n - 3] < target)
+                continue;
+
             for (int j = i + 1; j < n - 2; j++) {
 
                 if (j > i + 1 && nums[j] == nums[j - 1])
                     continue;
 
-                int left = j + 1;
-                int right = n - 1;
+                // Minimum possible sum > target
+                if ((long) nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target)
+                    break;
 
-                while (left < right) {
+                // Maximum possible sum < target
+                if ((long) nums[i] + nums[j] + nums[n - 1] + nums[n - 2] < target)
+                    continue;
+
+                int l = j + 1;
+                int r = n - 1;
+
+                while (l < r) {
 
                     long sum = (long) nums[i]
                              + nums[j]
-                             + nums[left]
-                             + nums[right];
+                             + nums[l]
+                             + nums[r];
 
                     if (sum == target) {
 
-                        result.add(Arrays.asList(
-                            nums[i],
-                            nums[j],
-                            nums[left],
-                            nums[right]
+                        ans.add(Arrays.asList(
+                            nums[i], nums[j], nums[l], nums[r]
                         ));
 
-                        left++;
-                        right--;
+                        int leftVal = nums[l];
+                        int rightVal = nums[r];
 
-                        while (left < right &&
-                               nums[left] == nums[left - 1])
-                            left++;
+                        while (l < r && nums[l] == leftVal)
+                            l++;
 
-                        while (left < right &&
-                               nums[right] == nums[right + 1])
-                            right--;
+                        while (l < r && nums[r] == rightVal)
+                            r--;
 
                     } else if (sum < target) {
-                        left++;
+                        l++;
                     } else {
-                        right--;
+                        r--;
                     }
                 }
             }
         }
 
-        return result;
+        return ans;
     }
 }
