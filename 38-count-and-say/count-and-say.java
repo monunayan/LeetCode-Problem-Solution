@@ -3,27 +3,21 @@ class Solution {
 
         String s = "1";
 
-        for (int k = 1; k < n; k++) {
+        while (--n > 0) {
+            StringBuilder sb = new StringBuilder(s.length() * 2);
 
-            StringBuilder next = new StringBuilder();
+            for (int i = 0; i < s.length();) {
 
-            int i = 0;
+                int j = i + 1;
 
-            while (i < s.length()) {
-
-                int j = i;
-
-                while (j < s.length() && s.charAt(j) == s.charAt(i)) {
+                while (j < s.length() && s.charAt(j) == s.charAt(i))
                     j++;
-                }
 
-                next.append(j - i);
-                next.append(s.charAt(i));
-
+                sb.append(j - i).append(s.charAt(i));
                 i = j;
             }
 
-            s = next.toString();
+            s = sb.toString();
         }
 
         return s;
