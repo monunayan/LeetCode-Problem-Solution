@@ -1,43 +1,26 @@
 class Solution {
     public boolean isMatch(String s, String p) {
-
-        int i = 0, j = 0;
-        int star = -1;
-        int match = 0;
-
-        while (i < s.length()) {
-
-            // Normal character ya '?'
-            if (j < p.length() &&
-                (p.charAt(j) == '?' || p.charAt(j) == s.charAt(i))) {
-                i++;
-                j++;
-            }
-
-            // '*' mila
-            else if (j < p.length() && p.charAt(j) == '*') {
-                star = j;
-                match = i;
-                j++;
-            }
-
-            // Mismatch hua, lekin pehle '*' mila tha
-            else if (star != -1) {
-                j = star + 1;
+        int si = 0, pi = 0, match = 0, star = -1;
+        int sn = s.length(), pn = p.length();
+        while (si < sn) {
+            if (pi < pn && (p.charAt(pi) == '?' || p.charAt(pi) == s.charAt(si))) {
+                si++;
+                pi++;
+            } else if (pi < pn && p.charAt(pi) == '*') {
+                star = pi;
+                match = si;
+                pi++;
+            } else if (star != -1) {
+                pi = star + 1;
                 match++;
-                i = match;
-            }
-
-            else {
+                si = match;
+            } else {
                 return false;
             }
         }
-
-        // Bache hue pattern mein sirf '*' hone chahiye
-        while (j < p.length() && p.charAt(j) == '*') {
-            j++;
+        while (pi < pn && p.charAt(pi) == '*') {
+            pi++;
         }
-
-        return j == p.length();
+        return pi == pn;
     }
 }
